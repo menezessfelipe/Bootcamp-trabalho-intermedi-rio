@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Felipe Marinello | Portfólio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --surface: #111118;
+      --card: #16161f;
+      --border: #1e1e2e;
+      --accent: #7c6af7;
+      --accent2: #c084fc;
+      --pink: #f472b6;
+      --text: #e8e6f0;
+      --muted: #7a7890;
+      --green: #4ade80;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Background noise texture */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Gradient orbs */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.12;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .orb-1 { width: 600px; height: 600px; background: var(--accent); top: -200px; right: -100px; }
+    .orb-2 { width: 400px; height: 400px; background: var(--pink); bottom: -100px; left: -100px; }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 3rem;
+      background: rgba(10,10,15,0.7);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-family: 'DM Mono', monospace;
+      letter-spacing: 0.05em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    /* SECTIONS */
+    section { position: relative; z-index: 1; }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 8rem 3rem 4rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(124,106,247,0.1);
+      border: 1px solid rgba(124,106,247,0.3);
+      border-radius: 100px;
+      padding: 0.3rem 1rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--accent);
+      margin-bottom: 2rem;
+      width: fit-content;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .hero-tag::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--green);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 7vw, 6rem);
+      font-weight: 900;
+      line-height: 1.05;
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.6s 0.1s ease both;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 50%, var(--pink) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-desc {
+      max-width: 560px;
+      color: var(--muted);
+      font-size: 1.05rem;
+      margin-bottom: 2.5rem;
+      animation: fadeUp 0.6s 0.2s ease both;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      animation: fadeUp 0.6s 0.3s ease both;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff;
+      text-decoration: none;
+      padding: 0.85rem 2rem;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 0 30px rgba(124,106,247,0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 50px rgba(124,106,247,0.5);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: transparent;
+      color: var(--text);
+      text-decoration: none;
+      padding: 0.85rem 2rem;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 0.9rem;
+      border: 1px solid var(--border);
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--accent);
+      background: rgba(124,106,247,0.05);
+    }
+
+    /* Scroll indicator */
+    .scroll-hint {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--muted);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      animation: fadeUp 0.6s 0.5s ease both;
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 50px;
+      background: linear-gradient(to bottom, var(--accent), transparent);
+      animation: scrollAnim 2s ease infinite;
+    }
+
+    @keyframes scrollAnim {
+      0% { transform: scaleY(0); transform-origin: top; }
+      50% { transform: scaleY(1); transform-origin: top; }
+      51% { transform: scaleY(1); transform-origin: bottom; }
+      100% { transform: scaleY(0); transform-origin: bottom; }
+    }
+
+    /* ABOUT */
+    .about {
+      padding: 6rem 3rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--accent);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700;
+      margin-bottom: 3rem;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .about-text p {
+      color: var(--muted);
+      margin-bottom: 1.2rem;
+      font-size: 1rem;
+    }
+
+    .about-text p strong {
+      color: var(--text);
+    }
+
+    .info-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .info-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.2rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      transition: border-color 0.2s;
+    }
+
+    .info-card:hover { border-color: var(--accent); }
+
+    .info-icon {
+      width: 40px; height: 40px;
+      background: rgba(124,106,247,0.1);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .info-card-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      margin-bottom: 0.15rem;
+    }
+
+    .info-card-value {
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    /* SKILLS */
+    .skills-section {
+      padding: 6rem 3rem;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .skills-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .skill-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.8rem;
+      transition: transform 0.2s, border-color 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .skill-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .skill-card:hover { transform: translateY(-4px); border-color: rgba(124,106,247,0.4); }
+    .skill-card:hover::before { opacity: 1; }
+
+    .skill-emoji { font-size: 2rem; margin-bottom: 1rem; }
+    .skill-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .skill-desc { font-size: 0.85rem; color: var(--muted); }
+
+    .skill-bar-wrap {
+      margin-top: 1rem;
+      background: var(--border);
+      border-radius: 100px;
+      height: 4px;
+      overflow: hidden;
+    }
+
+    .skill-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius: 100px;
+      transition: width 1s ease;
+    }
+
+    .skill-level {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--accent);
+      margin-top: 0.4rem;
+    }
+
+    /* PROJECTS */
+    .projects-section {
+      padding: 6rem 3rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .project-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      transition: transform 0.2s, border-color 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-card:hover { transform: translateY(-4px); border-color: rgba(124,106,247,0.4); }
+
+    .project-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 100px;
+      width: fit-content;
+    }
+
+    .status-planned {
+      background: rgba(124,106,247,0.1);
+      color: var(--accent);
+      border: 1px solid rgba(124,106,247,0.3);
+    }
+
+    .status-learning {
+      background: rgba(74,222,128,0.1);
+      color: var(--green);
+      border: 1px solid rgba(74,222,128,0.3);
+    }
+
+    .project-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+
+    .project-desc { font-size: 0.88rem; color: var(--muted); }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: auto;
+    }
+
+    .tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      padding: 0.2rem 0.6rem;
+      background: rgba(124,106,247,0.08);
+      border: 1px solid rgba(124,106,247,0.2);
+      border-radius: 4px;
+      color: var(--accent2);
+    }
+
+    /* TIMELINE */
+    .timeline-section {
+      padding: 6rem 3rem;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .timeline-inner {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 8px;
+      bottom: 8px;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--accent), transparent);
+    }
+
+    .timeline-item {
+      position: relative;
+      padding: 1.5rem 0 2rem 2rem;
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: -5px;
+      top: 1.8rem;
+      width: 11px; height: 11px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 12px var(--accent);
+    }
+
+    .timeline-date {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--accent);
+      margin-bottom: 0.4rem;
+    }
+
+    .timeline-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+    }
+
+    .timeline-sub {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    /* CONTACT */
+    .contact-section {
+      padding: 6rem 3rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .contact-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 4rem 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact-box::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(124,106,247,0.08) 0%, transparent 70%);
+    }
+
+    .contact-box h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 900;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+
+    .contact-box p {
+      color: var(--muted);
+      max-width: 500px;
+      margin: 0 auto 2.5rem;
+      position: relative;
+    }
+
+    .contact-links {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      position: relative;
+    }
+
+    /* FOOTER */
+    footer {
+      padding: 2rem 3rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    footer p {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .hero, .about, .skills-inner, .projects-section, .contact-section { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .about-grid { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">Felipe Marinello</div>
+    <ul class="nav-links">
+      <li><a href="#sobre">sobre</a></li>
+      <li><a href="#habilidades">habilidades</a></li>
+      <li><a href="#projetos">projetos</a></li>
+      <li><a href="#formacao">formação</a></li>
+      <li><a href="#contato">contato</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="inicio">
+    <div class="hero-tag">Disponível para oportunidades</div>
+    <h1>
+      Felipe<br/>
+      <em>Menezes</em>
+    </h1>
+    <p class="hero-desc">
+      Estudante de <strong>Ciências da Computação</strong> no UniCEUB · Brasília, DF.<br/>
+      Em formação, com foco em desenvolvimento de software e boas práticas de engenharia.
+    </p>
+    <div class="hero-ctas">
+      <a href="https://www.linkedin.com/in/felipe-menezes-da-costa-marinello-6b755b357/" target="_blank" class="btn-primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        LinkedIn
+      </a>
+      <a href="https://github.com" target="_blank" class="btn-secondary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+        GitHub
+      </a>
+    </div>
+    <div class="scroll-hint">
+      <span>scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about" id="sobre">
+    <div class="reveal">
+      <p class="section-label">// 01 · sobre mim</p>
+      <h2 class="section-title">Quem sou eu</h2>
+    </div>
+    <div class="about-grid reveal">
+      <div class="about-text">
+        <p>
+          Sou <strong>Felipe Menezes da Costa Marinello</strong>, estudante de
+          <strong>Ciências da Computação</strong> no <strong>UniCEUB — Centro Universitário de Brasília</strong>,
+          atualmente no <strong>primeiro semestre</strong> do curso.
+        </p>
+        <p>
+          Resido em Brasília, Distrito Federal, e estou dando os primeiros passos na área de tecnologia,
+          com grande interesse em desenvolvimento de software, lógica de programação e boas práticas de
+          engenharia de software.
+        </p>
+        <p>
+          Este portfólio representa o início da minha jornada profissional — um espaço dedicado ao
+          registro do meu crescimento acadêmico, dos projetos que desenvolverei ao longo do curso e
+          das habilidades que estou construindo.
+        </p>
+        <p>
+          Acredito que documentar o processo de aprendizado é tão importante quanto o resultado final.
+          Cada projeto, cada linha de código e cada erro corrigido fazem parte da formação de um
+          profissional sólido.
+        </p>
+      </div>
+      <div class="info-cards">
+        <div class="info-card">
+          <div class="info-icon">🎓</div>
+          <div>
+            <div class="info-card-label">Instituição</div>
+            <div class="info-card-value">UniCEUB — Centro Universitário de Brasília</div>
+          </div>
+        </div>
+        <div class="info-card">
+          <div class="info-icon">💻</div>
+          <div>
+            <div class="info-card-label">Curso</div>
+            <div class="info-card-value">Ciências da Computação · 1º Semestre</div>
+          </div>
+        </div>
+        <div class="info-card">
+          <div class="info-icon">📍</div>
+          <div>
+            <div class="info-card-label">Localização</div>
+            <div class="info-card-value">Brasília — Distrito Federal, Brasil</div>
+          </div>
+        </div>
+        <div class="info-card">
+          <div class="info-icon">🌱</div>
+          <div>
+            <div class="info-card-label">Status</div>
+            <div class="info-card-value">Em formação · Aberto a oportunidades</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section class="skills-section" id="habilidades">
+    <div class="skills-inner">
+      <div class="reveal">
+        <p class="section-label">// 02 · habilidades</p>
+        <h2 class="section-title">Tecnologias & Ferramentas</h2>
+      </div>
+      <div class="skills-grid reveal">
+
+        <div class="skill-card">
+          <div class="skill-emoji">⚙️</div>
+          <div class="skill-name">Linguagem C</div>
+          <div class="skill-desc">Lógica de programação, algoritmos e introdução ao desenvolvimento com a linguagem C.</div>
+          <div class="skill-bar-wrap"><div class="skill-bar" style="width: 40%"></div></div>
+          <div class="skill-level">Iniciante · Em aprendizado</div>
+        </div>
+
+        <div class="skill-card">
+          <div class="skill-emoji">🌐</div>
+          <div class="skill-name">HTML & CSS</div>
+          <div class="skill-desc">Estruturação e estilização de páginas web estáticas, semântica HTML.</div>
+          <div class="skill-bar-wrap"><div class="skill-bar" style="width: 45%"></div></div>
+          <div class="skill-level">Iniciante · Em aprendizado</div>
+        </div>
+
+        <div class="skill-card">
+          <div class="skill-emoji">🔧</div>
+          <div class="skill-name">Git & GitHub</div>
+          <div class="skill-desc">Controle de versão, repositórios remotos, commits e colaboração via GitHub.</div>
+          <div class="skill-bar-wrap"><div class="skill-bar" style="width: 50%"></div></div>
+          <div class="skill-level">Básico · Em prática</div>
+        </div>
+
+        <div class="skill-card">
+          <div class="skill-emoji">🧮</div>
+          <div class="skill-name">Lógica de Programação</div>
+          <div class="skill-desc">Estruturas condicionais, laços de repetição, funções e resolução de problemas.</div>
+          <div class="skill-bar-wrap"><div class="skill-bar" style="width: 55%"></div></div>
+          <div class="skill-level">Básico · Em desenvolvimento</div>
+        </div>
+
+        <div class="skill-card">
+          <div class="skill-emoji">📐</div>
+          <div class="skill-name">Algoritmos</div>
+          <div class="skill-desc">Introdução ao pensamento algorítmico, pseudocódigo e análise básica de problemas.</div>
+          <div class="skill-bar-wrap"><div class="skill-bar" style="width: 40%"></div></div>
+          <div class="skill-level">Iniciante · Em aprendizado</div>
+        </div>
+
+        <div class="skill-card">
+          <div class="skill-emoji">🖥️</div>
+          <div class="skill-name">GitHub Pages</div>
+          <div class="skill-desc">Publicação de páginas estáticas via GitHub Pages para portfólio e projetos.</div>
+          <div class="skill-bar-wrap"><div class="skill-bar" style="width: 60%"></div></div>
+          <div class="skill-level">Básico · Aplicado neste projeto</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section class="projects-section" id="projetos">
+    <div class="reveal">
+      <p class="section-label">// 03 · projetos</p>
+      <h2 class="section-title">Projetos em Desenvolvimento</h2>
+    </div>
+    <div class="projects-grid reveal">
+
+      <div class="project-card">
+        <div class="project-status status-learning">🟢 Em andamento</div>
+        <div class="project-title">Portfólio Profissional</div>
+        <div class="project-desc">
+          Página pessoal desenvolvida com HTML, CSS e JavaScript, versionada com Git e publicada
+          via GitHub Pages. Primeira entrega prática do curso de Ciências da Computação.
+        </div>
+        <div class="project-tags">
+          <span class="tag">HTML</span>
+          <span class="tag">CSS</span>
+          <span class="tag">Git</span>
+          <span class="tag">GitHub Pages</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-status status-planned">🔵 Planejado</div>
+        <div class="project-title">Calculadora em C</div>
+        <div class="project-desc">
+          Projeto acadêmico com foco em lógica de programação, operações matemáticas,
+          tratamento de entradas e modularização de código em linguagem C.
+        </div>
+        <div class="project-tags">
+          <span class="tag">Linguagem C</span>
+          <span class="tag">Algoritmos</span>
+          <span class="tag">Git</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-status status-planned">🔵 Planejado</div>
+        <div class="project-title">Sistema de Cadastro Simples</div>
+        <div class="project-desc">
+          Aplicação de console para cadastro e listagem de dados, com foco em estruturas
+          de dados, manipulação de arquivos e boas práticas de organização de código.
+        </div>
+        <div class="project-tags">
+          <span class="tag">Linguagem C</span>
+          <span class="tag">Estruturas de Dados</span>
+          <span class="tag">Git</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- TIMELINE -->
+  <section class="timeline-section" id="formacao">
+    <div class="timeline-inner">
+      <div class="reveal">
+        <p class="section-label">// 04 · formação</p>
+        <h2 class="section-title">Trajetória Acadêmica</h2>
+      </div>
+      <div class="timeline reveal">
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-date">2025 — presente</div>
+          <div class="timeline-title">UniCEUB — Centro Universitário de Brasília</div>
+          <div class="timeline-sub">Bacharelado em Ciências da Computação · 1º Semestre</div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-date">2025</div>
+          <div class="timeline-title">Introdução ao Versionamento com Git & GitHub</div>
+          <div class="timeline-sub">Disciplina prática — Criação de repositório e portfólio profissional</div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-date">Em breve</div>
+          <div class="timeline-title">Certificações e Cursos Complementares</div>
+          <div class="timeline-sub">Programação, algoritmos e desenvolvimento web — a serem realizados</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact-section" id="contato">
+    <div class="contact-box reveal">
+      <h2>Vamos nos <em style="font-style:normal;background:linear-gradient(135deg,var(--accent),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">conectar</em></h2>
+      <p>
+        Estou aberto a conversas sobre tecnologia, oportunidades de estágio,
+        projetos colaborativos e trocas de conhecimento.
+      </p>
+      <div class="contact-links">
+        <a href="https://www.linkedin.com/in/felipe-menezes-da-costa-marinello-6b755b357/" target="_blank" class="btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          LinkedIn
+        </a>
+        <a href="https://github.com" target="_blank" class="btn-secondary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+          GitHub
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025 · Felipe Menezes da Costa Marinello</p>
+    <p>UniCEUB · Ciências da Computação · 1º Semestre</p>
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        }
+      });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
